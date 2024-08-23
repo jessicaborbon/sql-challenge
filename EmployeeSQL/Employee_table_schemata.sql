@@ -1,58 +1,67 @@
 ﻿--Create employees table
 
-CREATE TABLE "employees" (
-    "emp_no" INT   NOT NULL,
-    "emp_title_id" varchar   NOT NULL,
-    "birth_date" date   NOT NULL,
-    "first_name" varchar   NOT NULL,
-    "last_name" varchar   NOT NULL,
-    "sex" varchar   NOT NULL,
-    "hire_date" date   NOT NULL,
-    CONSTRAINT "pk_employees" PRIMARY KEY (
-        "emp_no"
+CREATE TABLE "Departments" (
+    "dept_id" VARCHAR(255)   NOT NULL,
+    "dept_name" VARCHAR(255)   NOT NULL,
+    CONSTRAINT "pk_Departments" PRIMARY KEY (
+        "dept_id"
      )
 );
 
-CREATE TABLE "dept_emp" (
-    "emp_no" int   NOT NULL,
-    "dept_no" varchar   NOT NULL
+CREATE TABLE "Dept_Employees" (
+    "emp_id" INT   NOT NULL,
+    "dept_id" VARCHAR(255)   NOT NULL,
+    CONSTRAINT "pk_Dept_Employees" PRIMARY KEY (
+        "emp_id","dept_id"
+     )
 );
 
-CREATE TABLE "dept_manager" (
-    "dept_no" varchar   NOT NULL,
-    "emp_no" int   NOT NULL
+CREATE TABLE "Dept_Managers" (
+    "dept_id" VARCHAR(255)   NOT NULL,
+    "emp_id" INT   NOT NULL
 );
 
-CREATE TABLE "salaries" (
-    "emp_no" int   NOT NULL,
-    "salary" int   NOT NULL
+CREATE TABLE "Employees" (
+    "emp_id" INT   NOT NULL,
+    "emp_title_id" VARCHAR(255)   NOT NULL,
+    "birth_date" DATE   NOT NULL,
+    "first_name" VARCHAR(255)   NOT NULL,
+    "last_name" VARCHAR(255)   NOT NULL,
+    "sex" VARCHAR(255)   NOT NULL,
+    "hire_date" DATE   NOT NULL,
+    CONSTRAINT "pk_Employees" PRIMARY KEY (
+        "emp_id"
+     )
 );
 
-CREATE TABLE "titles" (
-    "title_id" varchar   NOT NULL,
-    "title" varchar   NOT NULL,
-    CONSTRAINT "pk_titles" PRIMARY KEY (
+CREATE TABLE "Salaries" (
+    "emp_id" INT   NOT NULL,
+    "salary" INT   NOT NULL
+);
+
+CREATE TABLE "Titles" (
+    "title_id" VARCHAR(255)   NOT NULL,
+    "title" VARCHAR(255)   NOT NULL,
+    CONSTRAINT "pk_Titles" PRIMARY KEY (
         "title_id"
      )
 );
 
-CREATE TABLE "departments" (
-    "dept_no" varchar   NOT NULL,
-    "dept_name" varchar   NOT NULL,
-    CONSTRAINT "pk_departments" PRIMARY KEY (
-        "dept_no"
-     )
-);
 
 ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_emp_no" FOREIGN KEY("emp_no")
 REFERENCES "employees" ("emp_no");
 
-ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_dept_no" FOREIGN KEY("dept_no")
-REFERENCES "departments" ("dept_no");
+ALTER TABLE "Dept_Employees" ADD CONSTRAINT "fk_Dept_Employees_dept_id" FOREIGN KEY("dept_id")
+REFERENCES "Departments" ("dept_id");
 
-ALTER TABLE "salaries" ADD CONSTRAINT "fk_salaries_emp_no" FOREIGN KEY("emp_no")
-REFERENCES "dept_manager" ("emp_no");
+ALTER TABLE "Dept_Managers" ADD CONSTRAINT "fk_Dept_Managers_dept_id" FOREIGN KEY("dept_id")
+REFERENCES "Departments" ("dept_id");
 
-ALTER TABLE "departments" ADD CONSTRAINT "fk_departments_dept_no" FOREIGN KEY("dept_no")
-REFERENCES "dept_manager" ("dept_no");
+ALTER TABLE "Dept_Managers" ADD CONSTRAINT "fk_Dept_Managers_emp_id" FOREIGN KEY("emp_id")
+REFERENCES "Employees" ("emp_id");
 
+ALTER TABLE "Employees" ADD CONSTRAINT "fk_Employees_emp_title_id" FOREIGN KEY("emp_title_id")
+REFERENCES "Titles" ("title_id");
+
+ALTER TABLE "Salaries" ADD CONSTRAINT "fk_Salaries_emp_id" FOREIGN KEY("emp_id")
+REFERENCES "Employees" ("emp_id");
